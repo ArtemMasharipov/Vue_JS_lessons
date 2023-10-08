@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<title>Vue JS. Lesson 1</title>
+</head>
+
+<body>
+	<div class="header">
+		<h1>ДЗ. Урок №1. Вступ. Основи синтаксису</h1>
+	</div>
+	<div id="app">
+		<div class="card-container">
+			<my-component-task-1 class="my-component"></my-component-task-1>
+			<my-component-task-2 class="my-component"></my-component-task-2>
+			<my-component-task-3 class="my-component"></my-component-task-3>
+			<my-component-task-4 class="my-component"></my-component-task-4>
+			<my-component-task-5 class="my-component"></my-component-task-5>
+		</div>
+	</div>
+
+	<script>
+		const MyComponentTask1 = {
+			template: `
+        <div>
+            <h2>Задача 1.<br> Вводиться кількість пасажирів. Вивести:<br>
+            - скільки потрібно автобусів (кожен автобус на 20 місць)<br>
+            - скільки пляшок води (кожному пасажиру 2 пляшки)<br>
+            - скільки бутербродів (кожному пасажиру 3 бутерброди)<br>
+            </h2>
+				
+            <input type="number" min=0 v-model="numOfPassengers" placeholder="Введіть кількість пасажирів">
+            <span>Введена кількість пасажирів: {{ numOfPassengers }}</span>
+            <span>Автобусів потрібно: {{ calcBusses }}</span>
+            <span>Пляшок води потрібно: {{ calcWaterbottles }}</span>
+            <span>Бутербродів потрібно: {{ calcSandwiches }}</span>
+        </div>
+    `,
+			data() {
+				return {
+					numOfPassengers: null,
+				}
+			},
+			computed: {
+				calcBusses() {
+					return Math.ceil(this.numOfPassengers / 20);
+				},
+				calcWaterbottles() {
+					return this.numOfPassengers * 2;
+				},
+				calcSandwiches() {
+					return this.numOfPassengers * 3;
+				}
+			}
+		};
+		// --------------------------------MyComponentTask2---------------------------------------
+		const seasons = {
+			winter: {
+				monthsNum: [12, 1, 2],
+				clothing: "Зимовий одяг: пальто, шапка, рукавиці",
+				srcImage: "./img/winter_forest.jpg",
+				altText: "Зимовий ліс зі снігом"
+			},
+			spring: {
+				monthsNum: [3, 4, 5],
+				clothing: "Весняний одяг: куртка, джинси, светр",
+				srcImage: "./img/spring_forest.jpg",
+				altText: "Весняний ліс"
+			},
+			summer: {
+				monthsNum: [6, 7, 8],
+				clothing: "Літній одяг: футболка, шорти, сонцезахисна кепка",
+				srcImage: "./img/summer_forest.jpg",
+				altText: "Літній ліс"
+			},
+			autumn: {
+				monthsNum: [9, 10, 11],
+				clothing: "Осінній одяг: пальто, светр, черевики",
+				srcImage: "./img/fall_forest.jpg",
+				altText: "Осінній ліс"
+			}
+		};
+
+		const MyComponentTask2 = {
+			template: `<div>
+    <h2>Задача 2.<br> Вводиться номер місяця.<br> 
+    - Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….).<br> 
+    - Також автоматично виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс, …).
+    </h2>
+
+    <input type="number" v-model="month" placeholder="Введіть номер місяця">
+    <div v-if="recommendation">
+      <div class="img-container-task-2">
+        <span>Рекомендований одяг: {{ recommendation.clothing }}</span>
+        <img :src="recommendation.srcImage" :alt="recommendation.altText">
+      </div>
+    </div>
+  </div>`,
+			data() {
+				return {
+					month: null
+				};
+			},
+			computed: {
+				recommendation() {
+					const season = this.getSeason(this.month);
+					return seasons[season];
+				}
+			},
+			methods: {
+				getSeason(month) {
+					for (const season in seasons) {
+						if (seasons[season].monthsNum.includes(month)) {
+							return season;
+						}
+					}
+					return null;
+				}
+			}
+		};
+
+		// --------------------------------MyComponentTask3---------------------------------------
+		const MyComponentTask3 = {
+			template: `<div class="task-3">
+				<h2>
+					Задача 3. Задано початок та кінець діапазону. При натисканні на кнопку випадковим чином генерувати значення з вказаного діапазону та відображати його.
+					</h2>
+					<input type="number" v-model="startRange" placeholder="Початок діапазону">
+					<input type="number" v-model="endRange" placeholder="Кінець діапазону">
+					<button @click="generateRandomNumber">Згенерувати</button>
+					<span>Діапазон чисел: від {{startRange}} до {{endRange}}</span>
+					<span>Згенероване випадкове число в діапазоні: {{randomNumber}}</span>
+				</div>`,
+			data() {
+				return {
+					startRange: null,
+					endRange: null,
+					randomNumber: null
+				}
+			},
+			computed: {
+				minNum() {
+					return Math.min(this.startRange, this.endRange);
+				},
+				maxNum() {
+					return Math.max(this.startRange, this.endRange);
+				}
+			},
+			methods: {
+				generateRandomNumber() {
+					this.randomNumber = Math.floor(Math.random() * (this.maxNum - this.minNum + 1)) + this.minNum;
+				}
+			}
+		};
+		// --------------------------------MyComponentTask4---------------------------------------
+		const MyComponentTask4 = {
+			template: `<div class="task-4">
+    <h2>
+      Задача 4.<br> “Рахунок у банку”<br>
+      Вимоги:<br>
+      1) Спочатку сума дорівнює 0 грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям.<br>
+      2) Сума автоматично переводиться у долари та євро (фіксований курс задається у data).<br>
+      3) можливість зарахувати суму (контролювати, щоб не була від’ємною)<br>
+      4) можливість зняти (щоб не можна зняти більше ніж є на рахунку)<br>
+      5) при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків автоматично)<br><br>
+      При зміні суми :<br>
+      - якщо було зняття, то суму відоражати червоним<br>
+      - якщо було зарахування, то суму відображати зеленим<br>
+      Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим<br>
+    </h2>
+    <div class="task-4">
+      <h2>Задача 4. "Рахунок у банку"</h2>
+      <div class="form-container">
+        <p :class="balanceTextColor">Сума на рахунку: {{ formattedBalance }} грн.</p>
+        <div>
+          <label for="deposit">Зарахувати на рахунок:</label>
+          <input id="deposit" type="number" v-model="depositAmount">
+          <button @click="deposit">Зарахувати</button>
+        </div>
+        <div>
+          <label for="withdraw">Зняти з рахунку:</label>
+          <input id="withdraw" type="number" v-model="withdrawAmount">
+          <button @click="withdraw">Зняти</button>
+        </div>
+        <p>Відсотки за обслуговування: {{ formattedServiceFee }} грн.</p>
+        <div class="task-4-separating-line"></div>
+        <p :class="dollarsTextColor">Сума в доларах: {{ formattedGrnToDollars }} USD</p>
+        <p :class="eurosTextColor">Сума у євро: {{ formattedGrnToEuros }} EUR</p>
+      </div>
+    </div>
+  </div>`,
+			data() {
+				return {
+					balance: 0,
+					depositAmount: 0,
+					withdrawAmount: 0,
+					serviceFee: 0,
+					operation: '',
+				};
+			},
+			methods: {
+				deposit() {
+					if (this.depositAmount > 0) {
+						this.balance += this.depositAmount;
+						this.operation = 'deposit';
+						this.calculateServiceFee(this.depositAmount);
+						this.depositAmount = 0;
+					}
+				},
+				withdraw() {
+					if (this.withdrawAmount > 0 && this.withdrawAmount <= this.balance) {
+						this.balance -= this.withdrawAmount;
+						this.operation = 'withdraw';
+						this.calculateServiceFee(this.withdrawAmount);
+						this.withdrawAmount = 0;
+					}
+				},
+				calculateServiceFee(amount) {
+					const fee = amount * 0.03;
+					this.balance -= fee;
+					this.serviceFee += fee;
+				},
+				formatNumber(value) {
+					return value.toFixed(2);
+				},
+			},
+			computed: {
+				formattedBalance() {
+					return this.formatNumber(this.balance);
+				},
+				formattedServiceFee() {
+					return this.formatNumber(this.serviceFee);
+				},
+				formattedGrnToDollars() {
+					const grnToDollars = this.balance * 0.035;
+					return this.formatNumber(grnToDollars);
+				},
+				formattedGrnToEuros() {
+					const grnToEuros = this.balance * 0.03;
+					return this.formatNumber(grnToEuros);
+				},
+				balanceTextColor() {
+					return this.operation ? (this.operation === 'withdraw' ? 'text-red' : 'text-green') : '';
+				},
+				dollarsTextColor() {
+					return this.formattedGrnToDollars < 100 ? 'text-red' : 'text-green';
+				},
+				eurosTextColor() {
+					return this.formattedGrnToEuros < 100 ? 'text-red' : 'text-green';
+				},
+			},
+		};
+
+
+		// --------------------------------MyComponentTask5---------------------------------------
+		const users = [
+			{ login: 'user1', password: 'password1' },
+			{ login: 'user2', password: 'password2' },
+			{ login: 'user3', password: 'password3' },
+		];
+
+		const MyComponentTask5 = {
+			template: `<div class="task-5">
+    <h2>
+      Задача 5.<br> Додаток містить масив об’єктів (логін, пароль) --  існуючі логіни і паролі. 
+      Користувач вводить логін і пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву).
+    </h2>
+    <div>
+      <h2>Авторизація</h2>
+      <div>
+        <label for="login">Логін:</label>
+        <input id="login" v-model="userLogin" type="text">
+      </div>
+      <div>
+        <label for="password">Пароль:</label>
+        <input id="password" v-model="userPassword" type="password">
+      </div>
+      <button @click="authorize">Увійти</button>
+    </div>
+  </div>`,
+
+			data() {
+				return {
+					userLogin: '',
+					userPassword: '',
+				};
+			},
+
+			methods: {
+				authorize() {
+					const user = users.find(
+						(u) => u.login === this.userLogin && u.password === this.userPassword
+					);
+
+					if (user) {
+						alert('Ви авторизовані!');
+					} else {
+						alert('Невірний логін або пароль. Спробуйте ще раз.');
+					}
+
+					this.userLogin = '';
+					this.userPassword = '';
+				},
+			},
+		};
+
+		const { createApp } = Vue;
+
+		const app = createApp({
+			components: {
+				'my-component-task-1': MyComponentTask1,
+				'my-component-task-2': MyComponentTask2,
+				'my-component-task-3': MyComponentTask3,
+				'my-component-task-4': MyComponentTask4,
+				'my-component-task-5': MyComponentTask5
+			}
+		});
+
+		app.mount('#app');
+	</script>
+</body>
+
+</html>
