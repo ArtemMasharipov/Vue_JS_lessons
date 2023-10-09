@@ -215,7 +215,7 @@
 
 				withdraw() {
 					if (this.withdrawAmount > 0 && this.withdrawAmount <= this.balance) {
-						const fee = this.withdrawAmount * 0.03;
+						const fee = this.calculateServiceFee(this.withdrawAmount);
 						if (this.balance >= this.withdrawAmount + fee) {
 							this.balance -= this.withdrawAmount + fee;
 							this.operation = 'withdraw';
