@@ -59,27 +59,38 @@
 			}
 		};
 		// --------------------------------MyComponentTask2---------------------------------------
+		const monthToSeason = {
+			1: 'winter',
+			2: 'winter',
+			3: 'spring',
+			4: 'spring',
+			5: 'spring',
+			6: 'summer',
+			7: 'summer',
+			8: 'summer',
+			9: 'autumn',
+			10: 'autumn',
+			11: 'autumn',
+			12: 'winter',
+		};
+
 		const seasons = {
 			winter: {
-				monthsNum: [12, 1, 2],
 				clothing: "Зимовий одяг: пальто, шапка, рукавиці",
 				srcImage: "./img/winter_forest.jpg",
 				altText: "Зимовий ліс зі снігом"
 			},
 			spring: {
-				monthsNum: [3, 4, 5],
 				clothing: "Весняний одяг: куртка, джинси, светр",
 				srcImage: "./img/spring_forest.jpg",
 				altText: "Весняний ліс"
 			},
 			summer: {
-				monthsNum: [6, 7, 8],
 				clothing: "Літній одяг: футболка, шорти, сонцезахисна кепка",
 				srcImage: "./img/summer_forest.jpg",
 				altText: "Літній ліс"
 			},
 			autumn: {
-				monthsNum: [9, 10, 11],
 				clothing: "Осінній одяг: пальто, светр, черевики",
 				srcImage: "./img/fall_forest.jpg",
 				altText: "Осінній ліс"
@@ -108,22 +119,11 @@
 			},
 			computed: {
 				recommendation() {
-					const season = this.getSeason(this.month);
+					const season = monthToSeason[this.month];
 					return seasons[season];
-				}
-			},
-			methods: {
-				getSeason(month) {
-					for (const season in seasons) {
-						if (seasons[season].monthsNum.includes(month)) {
-							return season;
-						}
-					}
-					return null;
 				}
 			}
 		};
-
 		// --------------------------------MyComponentTask3---------------------------------------
 		const MyComponentTask3 = {
 			template: `<div class="task-3">
