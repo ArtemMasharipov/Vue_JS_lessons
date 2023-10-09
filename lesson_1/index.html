@@ -208,8 +208,8 @@
 						const fee = this.calculateServiceFee(this.depositAmount);
 						this.balance += this.depositAmount - fee;
 						this.operation = 'deposit';
-						this.depositAmount = 0;
 						this.serviceFee += fee;
+						this.depositAmount = 0;
 					}
 				},
 
