@@ -205,29 +205,33 @@
 			methods: {
 				deposit() {
 					if (this.depositAmount > 0) {
-						this.balance += this.depositAmount;
+						const fee = this.calculateServiceFee(this.depositAmount);
+						this.balance += this.depositAmount - fee;
 						this.operation = 'deposit';
-						this.calculateServiceFee(this.depositAmount);
 						this.depositAmount = 0;
+						this.serviceFee += fee;
 					}
 				},
+
 				withdraw() {
 					if (this.withdrawAmount > 0 && this.withdrawAmount <= this.balance) {
-						this.balance -= this.withdrawAmount;
-						this.operation = 'withdraw';
-						this.calculateServiceFee(this.withdrawAmount);
-						this.withdrawAmount = 0;
+						const fee = this.withdrawAmount * 0.03;
+						if (this.balance >= this.withdrawAmount + fee) {
+							this.balance -= this.withdrawAmount + fee;
+							this.operation = 'withdraw';
+							this.serviceFee += fee;
+							this.withdrawAmount = 0;
+						}
 					}
 				},
 				calculateServiceFee(amount) {
-					const fee = amount * 0.03;
-					this.balance -= fee;
-					this.serviceFee += fee;
+					return amount * 0.03;
 				},
 				formatNumber(value) {
 					return value.toFixed(2);
 				},
 			},
+
 			computed: {
 				formattedBalance() {
 					return this.formatNumber(this.balance);
@@ -270,23 +274,28 @@
       Користувач вводить логін і пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву).
     </h2>
     <div>
-      <h2>Авторизація</h2>
-      <div>
-        <label for="login">Логін:</label>
-        <input id="login" v-model="userLogin" type="text">
-      </div>
-      <div>
-        <label for="password">Пароль:</label>
-        <input id="password" v-model="userPassword" type="password">
-      </div>
-      <button @click="authorize">Увійти</button>
-    </div>
+  <h2>Авторизація</h2>
+  <div>
+    <label for="login">Логін:</label>
+    <input id="login" v-model="userLogin" type="text">
+  </div>
+  <div>
+    <label for="password">Пароль:</label>
+    <input id="password" v-model="userPassword" type="password">
+  </div>
+  <div>
+    <button @click="authorize">Увійти</button>
+    <p>{{message}}</p>
+  </div>
+</div>
+
   </div>`,
 
 			data() {
 				return {
 					userLogin: '',
 					userPassword: '',
+					message: '',
 				};
 			},
 
@@ -297,9 +306,9 @@
 					);
 
 					if (user) {
-						alert('Ви авторизовані!');
+						this.message='Ви авторизовані!';
 					} else {
-						alert('Невірний логін або пароль. Спробуйте ще раз.');
+						this.message = 'Невірний логін або пароль. Спробуйте ще раз.';
 					}
 
 					this.userLogin = '';
