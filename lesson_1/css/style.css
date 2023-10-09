@@ -162,7 +162,7 @@ label {
  }
 /* task-5 ----------------------------------*/
 .task-5 button {
-	margin-bottom: 10px;
+	margin-right: 10px;
 	background: rgb(165, 236, 165);
 	max-width: 110px;
 	padding: 10px;
@@ -176,4 +176,8 @@ label {
 	transform: scale(0.95);
 	box-shadow: none; 
 	background: rgb(96, 163, 96);
+ }
+ .task-5 p {
+	display: inline-block;
+	font-weight: bold;
  }
