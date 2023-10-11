@@ -196,8 +196,8 @@
 			data() {
 				return {
 					balance: 0,
-					depositAmount: 0,
-					withdrawAmount: 0,
+					depositAmount: null,
+					withdrawAmount: null,
 					serviceFee: 0,
 					operation: '',
 				};
@@ -209,7 +209,7 @@
 						this.balance += this.depositAmount - fee;
 						this.operation = 'deposit';
 						this.serviceFee += fee;
-						this.depositAmount = 0;
+						this.depositAmount = null;
 					}
 				},
 
@@ -220,7 +220,7 @@
 							this.balance -= this.withdrawAmount + fee;
 							this.operation = 'withdraw';
 							this.serviceFee += fee;
-							this.withdrawAmount = 0;
+							this.withdrawAmount = null;
 						}
 					}
 				},
