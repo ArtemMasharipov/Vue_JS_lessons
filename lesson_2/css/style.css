@@ -220,13 +220,10 @@ select option {
 /* -------------------Task-5------------------- */
 .task-5-container {
   color: white;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   border-radius: 5px;
-  padding: 10px 20px;
   border: 2px solid black;
   background-color: rgba(0, 0, 0, 0.775);
+  padding: 10px 20px;
 }
 
 .task-5-container li{
@@ -261,12 +258,10 @@ select option {
 }
 @media (max-width: 600px) {
 	.task-5-container {
+		font-size: 14px;
 		color: white;
-		display: flex;
-		/* justify-content: center; */
-		/* align-items: center; */
 		border-radius: 5px;
-		padding: 10px 2px;
+		padding: 10px 10px;
 		border: 2px solid black;
 		background-color: rgba(0, 0, 0, 0.775);
 	 }
