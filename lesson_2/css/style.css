@@ -298,8 +298,14 @@ select option {
 }
 
 @media (max-width: 600px) {
+	.taks-6-cards-container{
+		width: 100%;
+	}
   .task-6-container li {
     font-size: 14px;
+  }
+  .task-6-container input {
+	max-width: 60%;
   }
 
   .task-6-container button {
