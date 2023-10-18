@@ -207,11 +207,10 @@ select option {
 /* -------------------Task-4------------------- */
 .task-4-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   border-radius: 5px;
   padding: 10px 20px;
-  width: 60%;
+  width: 30%;
   border: 2px solid black;
   background-color: rgba(128, 128, 128, 0.1);
 }
@@ -221,22 +220,22 @@ select option {
 /* -------------------Task-5------------------- */
 .task-5-container {
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
   border-radius: 5px;
   padding: 10px 20px;
   border: 2px solid black;
   background-color: rgba(0, 0, 0, 0.775);
 }
 
-.task-5-container li:not(:last-child) {
+.task-5-container li{
   list-style: none;
   margin-bottom: 26px;
 }
 
 .task-5-container img {
-  max-width: 7%;
+  max-width:7%;
   margin-right: 10px;
 }
 
@@ -260,10 +259,22 @@ select option {
   flex-direction: column;
   justify-content: center;
 }
+@media (max-width: 600px) {
+	.task-5-container {
+		color: white;
+		display: flex;
+		/* justify-content: center; */
+		/* align-items: center; */
+		border-radius: 5px;
+		padding: 10px 2px;
+		border: 2px solid black;
+		background-color: rgba(0, 0, 0, 0.775);
+	 }
+}
 /* -------------------Task-6------------------- */
 .taks-6-cards-container{
 	width: 70%;
-	margin: 0 auto; /
+	margin: 0 auto; 
 }
 .task-6-container ul {
   border: 2px solid black;
@@ -298,6 +309,9 @@ select option {
 }
 
 @media (max-width: 600px) {
+	.task-4-container{
+		width: 60%;
+	}
 	.taks-6-cards-container{
 		width: 100%;
 	}
