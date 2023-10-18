@@ -304,7 +304,10 @@ select option {
   .task-6-container li {
     font-size: 14px;
   }
-  .task-6-container,.task-1 input {
+  .task-6-container input {
+	max-width: 60%;
+  }
+  .task-1 input {
 	max-width: 60%;
   }
 
