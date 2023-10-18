@@ -426,7 +426,7 @@
 						<h2>Очікують на виконання</h2>
 						<li v-for="(order, index) in ordersPending" :key="index">
 							{{ order }}
-							<button @click="startOrder(index)">Почати</button>
+							<button @click="startOrder(index)">Готувати</button>
 						</li>
 						</ul>
 					</div>
@@ -436,7 +436,7 @@
 						<h2>Виконуються</h2>
 						<li v-for="(order, index) in ordersInProgress" :key="index">
 							{{ order }}
-							<button @click="finishOrder(index)">Завершити</button>
+							<button @click="finishOrder(index)">Приготовлено</button>
 						</li>
 						</ul>
 					</div>
