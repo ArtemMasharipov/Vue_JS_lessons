@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<title>Vue JS. Lesson 2</title>
+</head>
+
+<body>
+	<div class="header">
+		<h1>ДЗ. Урок №2. Класи. Стилі. Умовне відображення. Списки</h1>
+	</div>
+	<div id="app">
+		<div class="card-container">
+			<my-component-task-1 class="my-component"></my-component-task-1>
+			<my-component-task-2 class="my-component"></my-component-task-2>
+			<my-component-task-3 class="my-component"></my-component-task-3>
+			<my-component-task-4 class="my-component"></my-component-task-4>
+			<my-component-task-5 class="my-component"></my-component-task-5>
+			<my-component-task-6 class="my-component"></my-component-task-6>
+		</div>
+	</div>
+
+	<script>
+		// --------------------------------MyComponentTask1---------------------------------------
+		const users = [
+			{ login: 'user1', password: 'password1' },
+			{ login: 'user2', password: 'password2' },
+			{ login: 'user3', password: 'password3' },
+		];
+		const TARGETED_LOGIN = 'Іван';
+
+		const authentificationMessageMap = {
+			authorized: 'Ви авторизовані!',
+			smile: '&#128526',
+			invalid: 'Невірний логін або пароль. Спробуйте ще раз.',
+		};
+
+		const MyComponentTask1 = {
+			template: `
+    <div>
+      <h2>Задача 1.<br> Вводимо логін і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то:<br>
+      1) якщо логін = Іван – колір повідомлення про помилку синій<br>
+      2) якщо хтось інший, то колір повідомлення червоний<br>
+      </h2>
+
+      <div class='task-1'>
+        <div class='task-1-form'>
+          <label>Логін<input type='text' v-model='userLogin' placeholder='Введіть логін'></input></label>
+          <label>Пароль<input type='password' v-model='userPassword' placeholder='Введіть пароль'></input></label>
+          <button :disabled="!userLogin" @click='authorize'>Увійти</button>
+          <p :class='messageClassesTaskOne' v-html="authenticationMessage"></p>
+        </div>
+      </div>
+    </div>
+  `,
+			data() {
+				return {
+					userLogin: null,
+					userPassword: null,
+					authenticationMessage: null,
+					targetedLogin: false,
+				};
+			},
+			computed: {
+				messageClassesTaskOne() {
+					return {
+						'task-1-message-color-targeted-login': this.targetedLogin,
+						'task-1-message-color-is-not-targeted-login': !this.targetedLogin,
+					};
+				},
+				checkIsTargetedLogin() {
+					return this.targetedLogin = this.userLogin === TARGETED_LOGIN;
+				},
+			},
+			methods: {
+				authorize() {
+					const authenticateUser = this.authenticateUser();
+					const checkLoginExists = this.checkLoginExists();
+
+					if (authenticateUser) {
+						this.setAutentificationMessage(authentificationMessageMap.authorized);
+					} else if (checkLoginExists) {
+						this.setAutentificationMessage(authentificationMessageMap.smile);
+					} else {
+						this.setAutentificationMessage(authentificationMessageMap.invalid);
+					}
+
+					this.checkIsTargetedLogin();
+					this.clearInputs();
+				},
+				authenticateUser() {
+					return users.find((u) => u.login === this.userLogin && u.password === this.userPassword);
+				},
+				checkLoginExists() {
+					return users.some((u) => u.login === this.userLogin);
+				},
+				setAutentificationMessage(message) {
+					this.authenticationMessage = message;
+				},
+				clearInputs() {
+					this.userLogin = null;
+					this.userPassword = null;
+				},
+			},
+		};
+		// --------------------------------MyComponentTask2---------------------------------------
+		const MyComponentTask2 = {
+			template: `
+	<div>
+		<h2>Задача 2.<br> З випадаючого списку вибираємо клас квитка в літаку.<br>
+			Якщо:<br>
+				1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то
+				запропонувати закуску (так/ні)), на фоні зображення бізнес-кабіни.<br>
+				2) Economy - виводимо елементи для вибору типу пива і чіпсів, на фоні хмар.<br>
+		</h2>
+
+		<div class="task-2-form">
+			<label for="select">Виберіть клас квитка:
+				<select v-model="ticketCategory" @change="clearSelections">
+					<option v-for="categoryOption  in ticketCategoriesOptions" :value="categoryOption.name" :key="categoryOption.id">{{ categoryOption.name }}</option>
+				</select>
+			</label>
+			<br>
+
+			<div v-if="isBusinessCategory" class="img-container-task-2 business-class">
+				<label for="businessOptions">Виберіть опції для бізнес-класу:</label>
+				<select v-model="businessOptions" id="businessOptions">
+					<option v-for="businessOption in businessOptionsList" :value="businessOption.name" :key="businessOption.id">{{ businessOption.name }}</option>
+				</select>
+				<div v-if="isCognacOption">
+					<label for="snackOption">Закуска:</label>
+					<select v-model="snackOption" id="snackOption">
+						<option value="Так">Так</option>
+						<option value="Ні">Ні</option>
+					</select>
+				</div>
+			</div>
+
+			<div v-else-if="isEconomyCategory" class="img-container-task-2 economy-class">
+				<label for="economyOptions">Виберіть опції для економ-класу:</label>
+				<select v-model="economyOptions" id="economyOptions">
+					<option v-for="economyOption in economyOptionsList" :value="economyOption.name" :key="economyOption.id">{{ economyOption.name }}</option>
+				</select>
+				<div v-if="isChipsOption">
+					<label for="chipsVariety">Вид чіпсів:</label>
+					<select v-model="chipsVariety" id="chipsVariety">
+						<option v-for="chipsOption in chipsVarietyList" :value="chipsOption.name" :key="chipsOption.id">{{ chipsOption.name }}</option>
+					</select>
+				</div>
+				<div v-if="isBeerOption">
+					<label for="beerVariety">Вид пива:</label>
+					<select v-model="beerVariety" id="beerVariety">
+						<option v-for="beerOption in beerVarietyList" :value="beerOption.name" :key="beerOption.id">{{ beerOption.name }}</option>
+					</select>
+				</div>
+			</div>
+	   </div> 
+   </div>`,
+			data() {
+				return {
+					ticketCategory: null,
+					businessOptions: null,
+					snackOption: null,
+					economyOptions: null,
+					chipsVariety: null,
+					beerVariety: null,
+					ticketCategoriesOptions: [{ id: 1, name: 'Бізнес' }, { id: 2, name: 'Економ' }],
+					businessOptionsList: [{ id: 1, name: 'Газета' }, { id: 2, name: 'Коньяк' }],
+					economyOptionsList: [{ id: 1, name: 'Пиво' }, { id: 2, name: 'Чіпси' }],
+					chipsVarietyList: [{ id: 1, name: 'Чіпси 1' }, { id: 2, name: 'Чіпси 2' }],
+					beerVarietyList: [{ id: 1, name: 'Світле' }, { id: 2, name: 'Темне' }],
+				};
+			},
+			computed: {
+				isBusinessCategory() {
+					return this.ticketCategory === 'Бізнес';
+				},
+				isEconomyCategory() {
+					return this.ticketCategory === 'Економ';
+				},
+				isCognacOption() {
+					return this.businessOptions === 'Коньяк';
+				},
+				isBeerOption() {
+					return this.economyOptions === 'Пиво';
+				},
+				isChipsOption() {
+					return this.economyOptions === 'Чіпси';
+				},
+			},
+			methods: {
+				clearSelections() {
+					this.businessOptions = null;
+					this.snackOption = null;
+					this.economyOptions = null;
+					this.beerVariety = null;
+					this.chipsVariety = null;
+				},
+			},
+		};
+		// --------------------------------MyComponentTask3---------------------------------------
+		const wordsForLearning = [
+			{
+				image: './img/task_3/apple.jpg',
+				word: 'apple',
+				translation: 'яблуко',
+				alt: 'Зображення яблука',
+			},
+			{
+				image: './img/task_3/banana.jpg',
+				word: 'banana',
+				translation: 'банан',
+				alt: 'Зображення банана',
+			},
+			{
+				image: './img/task_3/cat.png',
+				word: 'cat',
+				translation: 'кішка',
+				alt: 'Зображення кішки',
+			},
+			{
+				image: './img/task_3/dog.png',
+				word: 'dog',
+				translation: 'собака',
+				alt: 'Зображення собаки',
+			},
+		];
+
+		const feedbackMessages = {
+			correctAnswerMessage: 'Добре. Молодець!',
+			wrongAnswerMessage: 'Невірно, спробуйте ще раз',
+		};
+
+		const MyComponentTask3 = {
+			template: `<div>
+    <h2>
+      Задача 3.<br> Елемент тренажера англійської. Виводимо зображення елемента і слово. 
+      Користувач вводить відповідь. Якщо вірно – відтворюємо фразу «Добре. Молодець!» 
+      (і додаємо зелену рамку до елемента), якщо ні - то відтворюємо фразу «Невірно, 
+      спробуйте ще раз» (і додаємо червону рамку).
+    </h2>
+
+    <div  class="task-3-container">
+      <img :src="currentWord.image" :alt="currentWord.alt" :class="imageFrameColorClasses">
+      <p>{{ currentWord.word }}</p>
+      <input type="text" v-model="userAnswer" placeholder="Введіть переклад" :disabled="inputDisabled">
+      <button v-if="userAnswer" @click="checkAnswer" v-show="showCheckButton">Перевірити</button>
+      <button @click="loadNextWord" v-show="showNextWordButton">Наступне слово</button>
+      <p :class="feedbackTextClass" v-show="feedbackVisible">{{ feedback }}</p>
+    </div>
+  </div>`,
+			data() {
+				return {
+					userAnswer: '',
+					isCorrectAnswer: false,
+					feedback: null,
+					feedbackVisible: false,
+					showCheckButton: true,
+					showNextWordButton: false,
+					inputDisabled: false,
+					currentWord: this.getRandomWord(),
+				};
+			},
+			computed: {
+				imageFrameColorClasses() {
+					return {
+						'image-frame-black': !this.feedbackVisible,
+						'image-frame-green': this.isCorrectAnswer && this.feedbackVisible,
+						'image-frame-red': !this.isCorrectAnswer && this.feedbackVisible
+					};
+				},
+				feedbackTextClass() {
+					return this.isCorrectAnswer ? 'feedback-text-green' : 'feedback-text-red';
+				},
+			},
+			methods: {
+				checkAnswer() {
+					if (this.userAnswer) {
+						this.isCorrectAnswer = this.isAnswerCorrect();
+						this.feedback = this.isCorrectAnswer ? feedbackMessages.correctAnswerMessage : feedbackMessages.wrongAnswerMessage;
+						this.feedbackVisible = true;
+						this.updateButtonAndInputState();
+					}
+				},
+				loadNextWord() {
+					if (this.isCorrectAnswer) {
+						this.resetFeedbackAndUserAnswer();
+						this.updateButtonAndInputState();
+						this.currentWord = this.getRandomWord();
+					}
+				},
+				isAnswerCorrect() {
+					return this.userAnswer.toLowerCase() === this.currentWord.translation.toLowerCase();
+				},
+				updateButtonAndInputState() {
+					this.showCheckButton = !this.isCorrectAnswer;
+					this.showNextWordButton = this.isCorrectAnswer;
+					this.inputDisabled = this.isCorrectAnswer;
+				},
+				resetFeedbackAndUserAnswer() {
+					this.userAnswer = '';
+					this.isCorrectAnswer = false;
+					this.feedback = null;
+					this.feedbackVisible = false;
+				},
+				getRandomWord() {
+					return wordsForLearning[Math.floor(Math.random() * wordsForLearning.length)];
+				},
+			},
+		};
+		// --------------------------------MyComponentTask4---------------------------------------
+		const MyComponentTask4 = {
+			template: `<div class="task-4">
+    <h2>
+      Задача 4.<br> Вивести список як маркований список з елементами у форматі<br> (name: salary)
+    </h2>
+  		<div class="task-4-container">
+     		<ul>
+				<li v-for="employee in workersList" :key="employee.ID">{{ employee.name }}: {{ employee.salary}}</li>
+			</ul>
+      </div>
+  </div>`,
+			computed: {
+				workersList() {
+					return [
+						{ id: "111", name: "Іванов", salary: 10000 },
+						{ id: "112", name: "Петров", salary: 20000 },
+						{ id: "113", name: "Сидоров", salary: 30000 },
+					]
+				},
+			},
+		};
+		// --------------------------------MyComponentTask5---------------------------------------
+		const MyComponentTask5 = {
+			template: `<div class="task-5">
+    <h2>
+      Задача 5. Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
+    </h2>
+
+		<div class="task-5-container">
+			<ul>
+			<li v-for="language in programmingLanguages" :key="language.id">
+				<div class="language-info">
+					<img :src="language.image" :alt="language.title">
+					<h3>
+						<a :href="language.url" class="language-link">{{ language.title }}</a>
+						<a :href="language.url" class="language-link">{{ language.url }}</a>
+					</h3>
+				</div>
+				<a :href="language.url" class="slogan-link">{{ language.slogan }}</a>
+				<p>{{ language.description }}</p>
+			</li>
+			</ul>
+		</div>
+  </div>`,
+
+			computed: {
+				programmingLanguages() {
+					return [
+						{
+							title: 'JavaScript',
+							url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+							image: './img/task_5/js.png',
+							description: 'JavaScript - це мова програмування, яка використовується для створення інтерактивних елементів на веб-сторінках. JavaScript є об\'єктно-орієнтованою мовою, яка підтримує функції першого класу, прототипне спадкування та динамічний тип.',
+							slogan: 'Створюйте інтерактивні веб-сторінки',
+							id: 2,
+						},
+						{
+							title: 'Python',
+							url: 'https://docs.python.org/3/',
+							image: './img/task_5/python.png',
+							description: 'Python - це високорівнева інтерпретована мова програмування загального призначення, розроблена Гвідо ван Россумом. Python є динамічно типізованою мовою, яка підтримує об\'єктно-орієнтоване програмування, процедурне програмування та функціональне програмування.',
+							slogan: 'Простота та потужність',
+							id: 1,
+						},
+						{
+							title: 'C++',
+							url: 'https://en.cppreference.com/w/',
+							image: './img/task_5/c++.png',
+							description: 'C++ - це об\'єктно-орієнтована мова програмування загального призначення, розроблена Б\'єрн Страуструпом. C++ є мовою низького рівня, яка підтримує процедурне програмування, об\'єктно-орієнтоване програмування та функціональне програмування.',
+							slogan: 'Швидкість та ефективність',
+							id: 3,
+						},
+						{
+							title: 'Java',
+							url: 'https://docs.oracle.com/javase/17/docs/',
+							image: './img/task_5/java.png',
+							description: 'Java - це об\'єктно-орієнтована мова програмування загального призначення, розроблена компанією Sun Microsystems. Java є мовою високого рівня, яка підтримує об\'єктно-орієнтоване програмування та функціональне програмування.',
+							slogan: 'Безпека та переносимість',
+							id: 4,
+						},
+						{
+							title: 'Go',
+							url: 'https://golang.org/doc/',
+							image: './img/task_5/go_logo.png',
+							description: 'Go - це мова програмування, розроблена Google. Go є мовою високого рівня, яка підтримує процедурне програмування, об\'єктно-орієнтоване програмування та функціональне програмування.',
+							slogan: 'Простота та продуктивність',
+							id: 5,
+						},
+					];
+				},
+			},
+		};
+		// --------------------------------MyComponentTask6---------------------------------------
+		const MyComponentTask6 = {
+			template: `<div class="task-6">
+		<h2>
+			Задача 6. Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують 
+			на виконання”, якщо повар береться робити — замовлення переходить у список “Виконуються”,   
+			якщо замовлення виконано — переходить у список “Готові до виносу”. Якщо натиснути на “Подано” - 
+			страва зникає з таблиці
+		</h2>
+
+				<div class="task-6-container">
+					<div class="taks-6-cards-container">
+						<h2>Додати нове замовлення</h2>
+						<input v-model="newOrder" type="text" placeholder="Введіть нове замовлення">
+						<button @click="addOrder">Додати</button>
+					<div class="order-section">
+						<ul>
+						<h2>Очікують на виконання</h2>
+						<li v-for="(order, index) in ordersPending" :key="index">
+							{{ order }}
+							<button @click="startOrder(index)">Почати</button>
+						</li>
+						</ul>
+					</div>
+
+					<div class="order-section">
+						<ul>
+						<h2>Виконуються</h2>
+						<li v-for="(order, index) in ordersInProgress" :key="index">
+							{{ order }}
+							<button @click="finishOrder(index)">Завершити</button>
+						</li>
+						</ul>
+					</div>
+
+					<div class="order-section">
+						<ul>
+						<h2>Готові до виносу</h2>
+						<li v-for="(order, index) in ordersReady" :key="index">
+							{{ order }}
+							<button @click="serveOrder(index)">Подано</button>
+						</li>
+						</ul>
+					</div>
+				</div>
+			 </div>`,
+			data() {
+				return {
+					newOrder: null,
+					ordersPending: ['Замовлення 1', 'Замовлення 2', 'Замовлення 3'],
+					ordersInProgress: [],
+					ordersReady: [],
+				};
+			},
+			methods: {
+				addOrder() {
+					if (this.newOrder) {
+						this.ordersPending.push(this.newOrder);
+						this.newOrder = '';
+					}
+				},
+				startOrder(index) {
+					this.ordersInProgress.push(this.ordersPending[index]);
+					this.ordersPending.splice(index, 1);
+				},
+				finishOrder(index) {
+					this.ordersReady.push(this.ordersInProgress[index]);
+					this.ordersInProgress.splice(index, 1);
+				},
+				serveOrder(index) {
+					this.ordersReady.splice(index, 1);
+				},
+			},
+		};
+
+		const { createApp } = Vue;
+
+		const app = createApp({
+			components: {
+				'my-component-task-1': MyComponentTask1,
+				'my-component-task-2': MyComponentTask2,
+				'my-component-task-3': MyComponentTask3,
+				'my-component-task-4': MyComponentTask4,
+				'my-component-task-5': MyComponentTask5,
+				'my-component-task-6': MyComponentTask6
+			}
+		});
+
+		app.mount('#app');
+	</script>
+</body>
+
+</html>
