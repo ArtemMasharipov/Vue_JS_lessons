@@ -265,6 +265,9 @@ select option {
 		border: 2px solid black;
 		background-color: rgba(0, 0, 0, 0.775);
 	 }
+	 .task-5-container img {
+		max-width:15%;
+	 }
 }
 /* -------------------Task-6------------------- */
 .taks-6-cards-container{
