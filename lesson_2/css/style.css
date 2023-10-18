@@ -211,7 +211,7 @@ select option {
   align-items: center;
   border-radius: 5px;
   padding: 10px 20px;
-  width: 40%;
+  width: 50%;
   border: 2px solid black;
   background-color: rgba(128, 128, 128, 0.1);
 }
