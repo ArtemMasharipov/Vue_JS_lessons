@@ -312,6 +312,7 @@ select option {
   color: rgb(68, 52, 52);
   border: none;
   border-radius: 4px;
+  max-width: 150px;
 }
 
 @media (max-width: 600px) {
