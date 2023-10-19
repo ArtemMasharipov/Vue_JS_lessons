@@ -454,21 +454,16 @@
 			data() {
 				return {
 					newOrder: '',
-					ordersPending: [
-        { id: 1, text: 'Замовлення 1' },
-        { id: 2, text: 'Замовлення 2' },
-        { id: 3, text: 'Замовлення 3' },
-      ],
+					ordersPending: [],
 					ordersInProgress: [],
 					ordersReady: [],
-					orderCount: 0,
 				};
 			},
 			methods: {
 				addOrder() {
 					if (this.newOrder) {
-						this.orderCount += 1;
-						this.ordersPending.push({ id: this.orderCount, text: this.newOrder });
+						const timestamp = new Date().getTime();
+						this.ordersPending.push({ id: timestamp, text: this.newOrder });
 						this.newOrder = '';
 					}
 				},
@@ -482,13 +477,6 @@
 					const index = this.ordersReady.findIndex((order) => order.id === orderId);
 					if (index !== -1) {
 						this.ordersReady.splice(index, 1);
-					}
-				},
-				moveOrder(orderId, source, destination) {
-					const index = source.findIndex((order) => order.id === orderId);
-					if (index !== -1) {
-						destination.push(source[index]);
-						source.splice(index, 1);
 					}
 				},
 			},
