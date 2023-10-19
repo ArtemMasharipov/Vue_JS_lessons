@@ -417,66 +417,79 @@
 		</h2>
 
 				<div class="task-6-container">
-					<div class="taks-6-cards-container">
-						<h2>Додати нове замовлення</h2>
-						<input v-model="newOrder" type="text" placeholder="Введіть замовлення">
-						<button @click="addOrder">Додати</button>
-					<div class="order-section">
-						<ul>
+				<div class="taks-6-cards-container">
+				<h2>Додати нове замовлення</h2>
+				<input v-model="newOrder" type="text" placeholder="Введіть замовлення">
+				<button @click="addOrder">Додати</button>
+				<div class="order-section">
+					<ul>
 						<h2>Очікують на виконання</h2>
-						<li v-for="(order, index) in ordersPending" :key="index">
-							{{ order }}
-							<button @click="startOrder(index)">Готувати</button>
+						<li v-for="order in ordersPending" :key="order.id">
+						{{ order.text }}
+						<button @click="startOrder(order.id)">Готувати</button>
 						</li>
-						</ul>
-					</div>
-
-					<div class="order-section">
-						<ul>
-						<h2>Виконуються</h2>
-						<li v-for="(order, index) in ordersInProgress" :key="index">
-							{{ order }}
-							<button @click="finishOrder(index)">Приготовано</button>
-						</li>
-						</ul>
-					</div>
-
-					<div class="order-section">
-						<ul>
-						<h2>Готові до виносу</h2>
-						<li v-for="(order, index) in ordersReady" :key="index">
-							{{ order }}
-							<button @click="serveOrder(index)">Подано</button>
-						</li>
-						</ul>
-					</div>
+					</ul>
 				</div>
-			 </div>`,
+				<div class="order-section">
+					<ul>
+						<h2>Виконуються</h2>
+						<li v-for="order in ordersInProgress" :key="order.id">
+						{{ order.text }}
+						<button @click="finishOrder(order.id)">Приготовлено</button>
+						</li>
+					</ul>
+				</div>
+				<div class="order-section">
+					<ul>
+						<h2>Готові до виносу</h2>
+						<li v-for="order in ordersReady" :key="order.id">
+						{{ order.text }}
+						<button @click="serveOrder(order.id)">Подано</button>
+						</li>
+					</ul>
+				</div>
+				</div>
+			</div>
+		</div>`,
 			data() {
 				return {
-					newOrder: null,
-					ordersPending: ['Замовлення 1', 'Замовлення 2', 'Замовлення 3'],
+					newOrder: '',
+					ordersPending: [
+        { id: 1, text: 'Замовлення 1' },
+        { id: 2, text: 'Замовлення 2' },
+        { id: 3, text: 'Замовлення 3' },
+      ],
 					ordersInProgress: [],
 					ordersReady: [],
+					orderCount: 0,
 				};
 			},
 			methods: {
 				addOrder() {
 					if (this.newOrder) {
-						this.ordersPending.push(this.newOrder);
+						this.orderCount += 1;
+						this.ordersPending.push({ id: this.orderCount, text: this.newOrder });
 						this.newOrder = '';
 					}
 				},
-				startOrder(index) {
-					this.ordersInProgress.push(this.ordersPending[index]);
-					this.ordersPending.splice(index, 1);
+				startOrder(orderId) {
+					this.moveOrder(orderId, this.ordersPending, this.ordersInProgress);
 				},
-				finishOrder(index) {
-					this.ordersReady.push(this.ordersInProgress[index]);
-					this.ordersInProgress.splice(index, 1);
+				finishOrder(orderId) {
+					this.moveOrder(orderId, this.ordersInProgress, this.ordersReady);
 				},
-				serveOrder(index) {
-					this.ordersReady.splice(index, 1);
+				serveOrder(orderId) {
+					const index = this.ordersReady.findIndex((order) => order.id === orderId);
+					if (index !== -1) {
+						this.ordersReady.splice(index, 1);
+					}
+				},
+				moveOrder(orderId, source, destination) {
+					const index = source.findIndex((order) => order.id === orderId);
+					if (index !== -1) {
+						destination.push(source[index]);
+						source.splice(index, 1);
+					}
 				},
 			},
 		};
