@@ -63,22 +63,24 @@
 					userLogin: null,
 					userPassword: null,
 					authenticationMessage: null,
-					targetedLogin: false,
 				};
 			},
 			computed: {
 				messageClassesTaskOne() {
 					return {
-						'task-1-message-color-targeted-login': this.targetedLogin,
-						'task-1-message-color-is-not-targeted-login': !this.targetedLogin,
+						'task-1-message-color-targeted-login': this.checkIsTargetedLogin,
+						'task-1-message-color-is-not-targeted-login': !this.checkIsTargetedLogin,
 					};
+				},
+				checkIsTargetedLogin() {
+					return this.userLogin === TARGETED_LOGIN;
 				},
 			},
 			methods: {
 				authorize() {
 					const authenticateUser = this.authenticateUser();
 					const checkLoginExists = this.checkLoginExists();
-					
+
 					if (authenticateUser) {
 						this.setAutentificationMessage(authentificationMessageMap.authorized);
 					} else if (checkLoginExists) {
@@ -86,7 +88,7 @@
 					} else {
 						this.setAutentificationMessage(authentificationMessageMap.invalid);
 					}
-					
+
 					this.checkIsTargetedLogin();
 					this.clearInputs();
 				},
@@ -95,9 +97,6 @@
 				},
 				checkLoginExists() {
 					return users.some((u) => u.login === this.userLogin);
-				},
-				checkIsTargetedLogin() {
-					return this.targetedLogin = this.userLogin === TARGETED_LOGIN;
 				},
 				setAutentificationMessage(message) {
 					this.authenticationMessage = message;
