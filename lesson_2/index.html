@@ -335,29 +335,31 @@
 			},
 		};
 		// --------------------------------MyComponentTask5---------------------------------------
-		const MyComponentTask5 = {
+			const MyComponentTask5 = {
 			template: `<div class="task-5">
-    <h2>
-      Задача 5.<br> Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
-    </h2>
+			<h2>
+				Задача 5.<br> Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
+			</h2>
 
-		<div class="task-5-container">
-			<ul>
-			<li v-for="language in programmingLanguages" :key="language.id">
-				<div class="language-info">
-					<img :src="language.image" :alt="language.title">
-					<h3>
-						<a :href="language.url" class="language-link">{{ language.title }}</a>
-						<a :href="language.url" class="language-link">{{ language.url }}</a>
-					</h3>
+				<div class="task-5-container">
+					<ul>
+					<li v-for="language in programmingLanguages" :key="language.id">
+						<div class="language-info">
+							<img :src="language.image" :alt="language.title">
+							<h3>
+								<a :href="language.url" class="language-link">
+									{{ language.title }}
+									<br>
+									{{ language.url }}
+								</a>
+							</h3>
+						</div>
+						<a :href="language.url" class="slogan-link">{{ language.slogan }}</a>
+						<p>{{ language.description }}</p>
+					</li>
+					</ul>
 				</div>
-				<a :href="language.url" class="slogan-link">{{ language.slogan }}</a>
-				<p>{{ language.description }}</p>
-			</li>
-			</ul>
-		</div>
-  </div>`,
-
+		</div>`,
 			computed: {
 				programmingLanguages() {
 					return [
