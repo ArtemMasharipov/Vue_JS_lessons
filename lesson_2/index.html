@@ -408,7 +408,7 @@
 			},
 		};
 		// --------------------------------MyComponentTask6---------------------------------------
-		const MyComponentTask6 = {
+			const MyComponentTask6 = {
 			template: `<div class="task-6">
 		<h2>
 			Задача 6.<br> Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують 
@@ -456,9 +456,9 @@
 				return {
 					newOrder: '',
 					ordersPending: [
-						{ id: 1, text: 'Замовлення 1' },
-						{ id: 2, text: 'Замовлення 2' },
-						{ id: 3, text: 'Замовлення 3' },
+						{ id: Symbol(), text: 'Замовлення 1' },
+						{ id: Symbol(), text: 'Замовлення 2' },
+						{ id: Symbol(), text: 'Замовлення 3' },
 					],
 					ordersInProgress: [],
 					ordersReady: [],
@@ -467,8 +467,7 @@
 			methods: {
 				addOrder() {
 					if (this.newOrder) {
-						const timestamp = new Date().getTime();
-						this.ordersPending.push({ id: timestamp, text: this.newOrder });
+						this.ordersPending.push({ id: Symbol(), text: this.newOrder });
 						this.newOrder = '';
 					}
 				},
