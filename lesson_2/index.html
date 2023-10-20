@@ -110,56 +110,56 @@
 		// --------------------------------MyComponentTask2---------------------------------------
 		const MyComponentTask2 = {
 			template: `
-	<div>
-		<h2>Задача 2.<br> З випадаючого списку вибираємо клас квитка в літаку.<br>
-			Якщо:<br>
-				1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то
-				запропонувати закуску (так/ні)), на фоні зображення бізнес-кабіни.<br>
-				2) Economy - виводимо елементи для вибору типу пива і чіпсів, на фоні хмар.<br>
-		</h2>
+				<div>
+					<h2>Задача 2.<br> З випадаючого списку вибираємо клас квитка в літаку.<br>
+						Якщо:<br>
+						1) бізнес - виводимо елементи для вибору газети та коньяку (якщо вибрано коньяк, то
+						запропонувати закуску (так/ні)), на фоні зображення бізнес-кабіни.<br>
+						2) Economy - виводимо елементи для вибору типу пива і чіпсів, на фоні хмар.<br>
+					</h2>
 
-		<div class="task-2-form">
-			<label for="select">Виберіть клас квитка:
-				<select v-model="ticketCategory" @change="clearSelections">
-					<option v-for="categoryOption  in ticketCategoriesOptions" :value="categoryOption.name" :key="categoryOption.id">{{ categoryOption.name }}</option>
-				</select>
-			</label>
-			<br>
+					<div class="task-2-form">
+						<label for="select">Виберіть клас квитка:
+						<select v-model="ticketCategory" @change="clearSelections">
+							<option v-for="categoryOption  in ticketCategoriesOptions" :value="categoryOption.name" :key="categoryOption.id">{{ categoryOption.name }}</option>
+						</select>
+						</label>
+						<br>
 
-			<div v-if="isBusinessCategory" class="img-container-task-2 business-class">
-				<label for="businessOptions">Виберіть опції для бізнес-класу:</label>
-				<select v-model="businessOptions" id="businessOptions">
-					<option v-for="businessOption in businessOptionsList" :value="businessOption.name" :key="businessOption.id">{{ businessOption.name }}</option>
-				</select>
-				<div v-if="isCognacOption">
-					<label for="snackOption">Закуска:</label>
-					<select v-model="snackOption" id="snackOption">
-						<option value="Так">Так</option>
-						<option value="Ні">Ні</option>
-					</select>
-				</div>
-			</div>
+						<div v-if="isBusinessCategory" class="img-container-task-2 business-class">
+						<label for="businessOptions">Виберіть опції для бізнес-класу:</label>
+						<select v-model="businessOptions" id="businessOptions">
+							<option v-for="businessOption in businessOptionsList" :value="businessOption.name" :key="businessOption.id">{{ businessOption.name }}</option>
+						</select>
+						<div v-if="isCognacOption">
+							<label for="snackOption">Закуска:</label>
+							<select v-model="snackOption" id="snackOption">
+								<option value="Так">Так</option>
+								<option value="Ні">Ні</option>
+							</select>
+						</div>
+						</div>
 
-			<div v-else-if="isEconomyCategory" class="img-container-task-2 economy-class">
-				<label for="economyOptions">Виберіть опції для економ-класу:</label>
-				<select v-model="economyOptions" id="economyOptions">
-					<option v-for="economyOption in economyOptionsList" :value="economyOption.name" :key="economyOption.id">{{ economyOption.name }}</option>
-				</select>
-				<div v-if="isChipsOption">
-					<label for="chipsVariety">Вид чіпсів:</label>
-					<select v-model="chipsVariety" id="chipsVariety">
-						<option v-for="chipsOption in chipsVarietyList" :value="chipsOption.name" :key="chipsOption.id">{{ chipsOption.name }}</option>
-					</select>
-				</div>
-				<div v-if="isBeerOption">
-					<label for="beerVariety">Вид пива:</label>
-					<select v-model="beerVariety" id="beerVariety">
-						<option v-for="beerOption in beerVarietyList" :value="beerOption.name" :key="beerOption.id">{{ beerOption.name }}</option>
-					</select>
-				</div>
-			</div>
-	   </div> 
-   </div>`,
+						<div v-else-if="isEconomyCategory" class="img-container-task-2 economy-class">
+						<label for="economyOptions">Виберіть опції для економ-класу:</label>
+						<select v-model="economyOptions" id="economyOptions">
+							<option v-for="economyOption in economyOptionsList" :value="economyOption.name" :key="economyOption.id">{{ economyOption.name }}</option>
+						</select>
+						<div v-if="isChipsOption">
+							<label for="chipsVariety">Вид чіпсів:</label>
+							<select v-model="chipsVariety" id="chipsVariety">
+								<option v-for="chipsOption in chipsVarietyList" :value="chipsOption.name" :key="chipsOption.id">{{ chipsOption.name }}</option>
+							</select>
+						</div>
+						<div v-if="isBeerOption">
+							<label for="beerVariety">Вид пива:</label>
+							<select v-model="beerVariety" id="beerVariety">
+								<option v-for="beerOption in beerVarietyList" :value="beerOption.name" :key="beerOption.id">{{ beerOption.name }}</option>
+							</select>
+						</div>
+						</div>
+					</div> 
+					</div>`,
 			data() {
 				return {
 					ticketCategory: null,
@@ -168,11 +168,11 @@
 					economyOptions: null,
 					chipsVariety: null,
 					beerVariety: null,
-					ticketCategoriesOptions: [{ id: 1, name: 'Бізнес' }, { id: 2, name: 'Економ' }],
-					businessOptionsList: [{ id: 1, name: 'Газета' }, { id: 2, name: 'Коньяк' }],
-					economyOptionsList: [{ id: 1, name: 'Пиво' }, { id: 2, name: 'Чіпси' }],
-					chipsVarietyList: [{ id: 1, name: 'Чіпси 1' }, { id: 2, name: 'Чіпси 2' }],
-					beerVarietyList: [{ id: 1, name: 'Світле' }, { id: 2, name: 'Темне' }],
+					ticketCategoriesOptions: [{ id: Symbol(), name: 'Бізнес' }, { id: Symbol(), name: 'Економ' }],
+					businessOptionsList: [{ id: Symbol(), name: 'Газета' }, { id: Symbol(), name: 'Коньяк' }],
+					economyOptionsList: [{ id: Symbol(), name: 'Пиво' }, { id: Symbol(), name: 'Чіпси' }],
+					chipsVarietyList: [{ id: Symbol(), name: 'Чіпси 1' }, { id: Symbol(), name: 'Чіпси 2' }],
+					beerVarietyList: [{ id: Symbol(), name: 'Світле' }, { id: Symbol(), name: 'Темне' }],
 				};
 			},
 			computed: {
@@ -315,27 +315,28 @@
 		// --------------------------------MyComponentTask4---------------------------------------
 		const MyComponentTask4 = {
 			template: `<div class="task-4">
-    <h2>
-      Задача 4.<br> Вивести список як маркований список з елементами у форматі<br> (name: salary)
-    </h2>
-  		<div class="task-4-container">
-     		<ul>
-				<li v-for="employee in workersList" :key="employee.ID">{{ employee.name }}: {{ employee.salary}}</li>
-			</ul>
-      </div>
-  </div>`,
+			<h2>
+				Задача 4.<br> Вивести список як маркований список з елементами у форматі<br> (name: salary)
+			</h2>
+			<div class="task-4-container">
+				<ul>
+				<li v-for="employee in workersList" :key="employee.id">{{ employee.name }}: {{ employee.salary}}</li>
+				</ul>
+			</div>
+		</div>`,
 			computed: {
 				workersList() {
 					return [
-						{ id: "111", name: "Іванов", salary: 10000 },
-						{ id: "112", name: "Петров", salary: 20000 },
-						{ id: "113", name: "Сидоров", salary: 30000 },
+						{ id: Symbol(), name: "Іванов", salary: 10000 },
+						{ id: Symbol(), name: "Петров", salary: 20000 },
+						{ id: Symbol(), name: "Сидоров", salary: 30000 },
 					]
 				},
 			},
 		};
+
 		// --------------------------------MyComponentTask5---------------------------------------
-			const MyComponentTask5 = {
+		const MyComponentTask5 = {
 			template: `<div class="task-5">
 			<h2>
 				Задача 5.<br> Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково повинні співпадати)
@@ -408,7 +409,7 @@
 			},
 		};
 		// --------------------------------MyComponentTask6---------------------------------------
-			const MyComponentTask6 = {
+		const MyComponentTask6 = {
 			template: `<div class="task-6">
 		<h2>
 			Задача 6.<br> Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують 
