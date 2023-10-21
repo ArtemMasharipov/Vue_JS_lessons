@@ -247,7 +247,7 @@
     <div  class="task-3-container">
       <img :src="currentWord.image" :alt="currentWord.alt" :class="imageFrameColorClasses">
       <p>{{ currentWord.word }}</p>
-      <input type="text" v-model="userAnswer" placeholder="Введіть переклад" :disabled="inputDisabled">
+      <input type="text" v-model.trim="userAnswer" placeholder="Введіть переклад" :disabled="inputDisabled">
       <button v-if="userAnswer" @click="checkAnswer" v-show="showCheckButton">Перевірити</button>
       <button @click="loadNextWord" v-show="showNextWordButton">Наступне слово</button>
       <p :class="feedbackTextClass" v-show="feedbackVisible">{{ feedback }}</p>
