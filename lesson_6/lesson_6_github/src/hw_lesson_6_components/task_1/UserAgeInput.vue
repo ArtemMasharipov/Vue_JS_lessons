@@ -51,7 +51,7 @@ export default {
 			if (this.modelModifiers.setColor && age) {
 				if (age < 10) {
 					return 'small-age-bg';
-				} else if (age >= 10 && age <= 21) {
+				} else if (age <= 21) {
 					return 'middle-age-bg';
 				} else {
 					return 'adult-age-bg';
