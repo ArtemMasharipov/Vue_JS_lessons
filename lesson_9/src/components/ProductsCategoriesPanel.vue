@@ -25,9 +25,6 @@ export default {
 			this.clearCategory();
 		}
 	},
-	created() {
-		this.clearCategory();
-	},
 	methods: {
 		...mapActions(['clearCategory']),
 		getCategoryRoute(categoryId) {
