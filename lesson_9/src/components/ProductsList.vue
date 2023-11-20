@@ -18,9 +18,6 @@ export default {
 			'categoryProducts',
 		]),
 	},
-	created() {
-		this.fetchData();
-	},
 	mounted() {
 		watch(() => this.$route.params.categoryId, (newVal) => {
 			this.fetchData(newVal);
