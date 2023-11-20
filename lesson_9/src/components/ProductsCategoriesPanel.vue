@@ -14,10 +14,16 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 
+
 export default {
 	name: 'ProductsCategoriesPanel',
 	computed: {
 		...mapGetters(['allCategories']),
+	},
+	watch: {
+		'$route'() {
+			this.clearCategory();
+		}
 	},
 	created() {
 		this.clearCategory();
