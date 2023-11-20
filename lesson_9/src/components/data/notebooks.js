@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
-import { categoryIdTVs } from '@/components/data/productCategories.js';
+import { categoryIdNotebooks } from '@/components/data/productCategories.js';
 
-const tvs = {
-	categoryId: categoryIdTVs,
+const notebooks = {
+	categoryId: categoryIdNotebooks,
 	products: [
-		{ id: uuidv4(), brand: "Brand A", model: "TV Model A", price: "2000", imgSrc: require("@/assets/products_items_img/tv.png") },
-		{ id: uuidv4(), brand: "Brand B", model: "TV Model B", price: "2500", imgSrc: require("@/assets/products_items_img/tv.png") }
+		{ id: uuidv4(), brand: "Lenovo", model: "Laptop A", price: "3000", imgSrc: require("@/assets/products_items_img/laptop.png") },
+		{ id: uuidv4(), brand: "HP", model: "Laptop B", price: "3500", imgSrc: require("@/assets/products_items_img/laptop.png") }
 	]
 };
 
-export default tvs;
+export default notebooks;
