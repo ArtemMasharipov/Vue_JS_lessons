@@ -16,7 +16,7 @@
 export default {
 	computed: {
 		isShopRouteActive() {
-			return this.$route.path === '/shop' || this.$route.path.startsWith('/shop/');
+			return /^\/shop($|\/)/.test(this.$route.path);
 		},
 		shopLinkClasses() {
 			return {
