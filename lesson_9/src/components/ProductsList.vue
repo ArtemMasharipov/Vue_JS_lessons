@@ -7,7 +7,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ProductsListItem from '@/components/ProductsListItem.vue';
-import { watch } from 'vue';
 
 export default {
 	components: {
