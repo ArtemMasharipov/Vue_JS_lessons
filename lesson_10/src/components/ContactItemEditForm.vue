@@ -42,13 +42,9 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['createContact', 'updateContact', 'cancelCreateContact']),
+		...mapActions(['saveContact', 'cancelCreateContact']),
 		saveEditedContact() {
-			if (this.isCreatingNewContact) {
-				this.createContact(this.localContact);
-			} else {
-				this.updateContact(this.localContact);
-			}
+			this.saveContact(this.localContact);
 			this.cancelCreateContact();
 		},
 		defaultContact() {
