@@ -36,7 +36,7 @@ export default createStore({
 		editContact: (state, updatedContact) => {
 			const index = state.contacts.findIndex(contact => contact.id === updatedContact.id);
 			if (index !== -1) {
-				state.contacts.splice(index, 1, updatedContact);
+				state.contacts[index] = updatedContact;
 			}
 		},
 		clearCurrentContact: state => state.currentContact = null,
