@@ -31,10 +31,7 @@ export default createStore({
 			state.contacts.push({ ...contact, id: uuidv4() });
 		},
 		deleteContact: (state, id) => {
-			const index = state.contacts.findIndex(contact => contact.id === id);
-			if (index !== -1) {
-				state.contacts.splice(index, 1);
-			}
+			state.contacts = state.contacts.filter(contact => contact.id !== id);
 		},
 		editContact: (state, updatedContact) => {
 			const index = state.contacts.findIndex(contact => contact.id === updatedContact.id);
