@@ -51,12 +51,12 @@ export default createStore({
 	},
 
 	actions: {
-		createContact: ({ commit }, contact) => {
-			commit('addContact', contact);
-			commit('clearCurrentContact');
-		},
-		updateContact: ({ commit }, contact) => {
-			commit('editContact', contact);
+		saveContact({ commit }, contact) {
+			if (contact.id) {
+				commit('editContact', contact);
+			} else {
+				commit('addContact', { ...contact, id: uuidv4() });
+			}
 			commit('clearCurrentContact');
 		},
 		removeContact: ({ commit }, id) => {
