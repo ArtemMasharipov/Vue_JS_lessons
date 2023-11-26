@@ -2,15 +2,15 @@
 	<div class="task-container">
 		<div class="contacts-manager">
 			<search-component />
-			<button @click="initiateCreateContact">Create new contact</button>
-			<contact-item-edit-form :is-creating="isCreatingNewContact" @cancel-creation="cancelCreateContact" />
+			<button @click="openContactForm">Create new contact</button>
+			<contact-item-edit-form />
 			<contact-list />
 		</div>
 	</div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions} from 'vuex';
 import SearchComponent from '@/components/SearchComponent.vue';
 import ContactList from '@/components/ContactList.vue';
 import ContactItemEditForm from '@/components/ContactItemEditForm.vue';
@@ -22,11 +22,9 @@ export default {
 		ContactList,
 		ContactItemEditForm
 	},
-	computed: {
-		...mapGetters(['isCreatingNewContact'])
-	},
+
 	methods: {
-		...mapActions(['initiateCreateContact', 'cancelCreateContact'])
+		...mapActions(['openContactForm', 'searchContacts']),
 	}
 };
 </script>
