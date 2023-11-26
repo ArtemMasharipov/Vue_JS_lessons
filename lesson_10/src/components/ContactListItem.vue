@@ -9,7 +9,7 @@
 			<div class="contact-email">{{ contact.email }}</div>
 		</div>
 		<div class="contact-actions">
-			<button class="edit" @click="editCurrentContact">Edit</button>
+			<button class="edit" @click="openEditContactForm">Edit</button>
 			<button class="delete" @click="deleteCurrentContact">Delete</button>
 		</div>
 	</div>
@@ -36,11 +36,9 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['removeContact', 'editContact']),
-		editCurrentContact() {
-			if (this.contact.id) {
-				this.editContact(this.contact.id);
-			}
+		...mapActions(['removeContact', 'openContactForm']),
+		openEditContactForm() {
+			this.openContactForm(this.contact);
 		},
 		deleteCurrentContact() {
 			this.removeContact(this.contact.id);
