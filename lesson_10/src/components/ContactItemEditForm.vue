@@ -45,6 +45,7 @@ export default {
 		...mapActions(['saveContact', 'cancelCreateContact']),
 		saveEditedContact() {
 			this.saveContact(this.localContact);
+			this.localContact = this.defaultContact();
 			this.cancelCreateContact();
 		},
 		defaultContact() {
