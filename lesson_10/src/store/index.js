@@ -10,7 +10,6 @@ export default createStore({
 		],
 		currentContact: null,
 		searchQuery: '',
-		isCreatingNewContact: false,
 	},
 
 	getters: {
@@ -23,56 +22,37 @@ export default createStore({
 			).sort((a, b) => a.name.localeCompare(b.name));
 		},
 		getCurrentContact: state => state.currentContact,
-		isCreatingNewContact: state => state.isCreatingNewContact,
 	},
 
 	mutations: {
-		addContact: (state, contact) => {
-			state.contacts.push({ ...contact, id: uuidv4() });
+
+		upsertContact: (state, contact) => {
+			const index = state.contacts.findIndex(c => c.id === contact.id);
+			if (index !== -1) {
+				state.contacts[index] = contact;
+			} else {
+				state.contacts.push({ ...contact, id: uuidv4() });
+			}
 		},
 		deleteContact: (state, id) => {
 			state.contacts = state.contacts.filter(contact => contact.id !== id);
 		},
-		editContact: (state, updatedContact) => {
-			const index = state.contacts.findIndex(contact => contact.id === updatedContact.id);
-			if (index !== -1) {
-				state.contacts[index] = updatedContact;
-			}
-		},
-		clearCurrentContact: state => state.currentContact = null,
-		setCurrentContact: (state, id) => {
-			state.currentContact = state.contacts.find(contact => contact.id === id);
-		},
+		setCurrentContact: (state, contact) => state.currentContact = contact,
 		setSearchQuery: (state, query) => state.searchQuery = query,
-		setCreatingNewContact: (state, status) => state.isCreatingNewContact = status,
 	},
 
 	actions: {
-		saveContact({ commit }, contact) {
-			if (contact.id) {
-				commit('editContact', contact);
-			} else {
-				commit('addContact', { ...contact, id: uuidv4() });
-			}
-			commit('clearCurrentContact');
+		handleContact: ({ commit }, contact) => {
+			commit('upsertContact', contact);
+			commit('setCurrentContact', null);
 		},
 		removeContact: ({ commit }, id) => {
 			commit('deleteContact', id);
-			commit('clearCurrentContact');
+			commit('setCurrentContact', null);
 		},
-		editContact: ({ commit }, id) => {
-			commit('setCreatingNewContact', false);
-			commit('setCurrentContact', id);
+		openContactForm: ({ commit }, contact = null) => {
+			commit('setCurrentContact', contact);
 		},
-		cancelEdit: ({ commit }) => commit('clearCurrentContact'),
 		searchContacts: ({ commit }, query) => commit('setSearchQuery', query),
-		initiateCreateContact: ({ commit }) => {
-			commit('setCreatingNewContact', true);
-			commit('setCurrentContact', null);
-		},
-		cancelCreateContact: ({ commit }) => {
-			commit('setCreatingNewContact', false);
-			commit('setCurrentContact', null);
-		},
 	},
 });
