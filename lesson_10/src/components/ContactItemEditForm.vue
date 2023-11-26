@@ -1,6 +1,6 @@
 <template>
-	<div v-if="formVisible" class="edit-form-container">
-		<form class="edit-form" @submit.prevent="saveEditedContact">
+	<div v-if="formVisible"  class="edit-form-container">
+		<form class="edit-form" @submit.prevent="saveContact">
 			<div class="input-group">
 				<input v-model="localContact.name" type="text" class="input-field" placeholder="Name" required>
 			</div>
@@ -12,7 +12,7 @@
 			</div>
 			<div class="form-actions">
 				<button type="submit" class="btn-save">{{ submitButtonText }}</button>
-				<button type="button" class="btn-cancel" @click="cancelCreateContact">Cancel</button>
+				<button type="button" class="btn-cancel" @click="cancelEdit">Cancel</button>
 			</div>
 		</form>
 	</div>
@@ -24,33 +24,35 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
 	name: 'ContactItemEditForm',
 	computed: {
-		...mapGetters(['getCurrentContact', 'isCreatingNewContact']),
+		...mapGetters(['getCurrentContact']),
 		formVisible() {
-			return this.isCreatingNewContact || this.getCurrentContact;
+			return this.getCurrentContact !== null;
 		},
 		submitButtonText() {
-			return this.isCreatingNewContact ? 'Create' : 'Save';
-		}
+			if (this.formVisible) {
+				return this.getCurrentContact.id ? 'Save' : 'Create';
+			}
+			return '';
+		},
 	},
+
 	watch: {
 		getCurrentContact(newVal) {
 			if (newVal) {
 				this.localContact = { ...newVal };
 			} else {
-				this.localContact = this.defaultContact();
+				this.localContact = {};
 			}
 		}
 	},
 	methods: {
-		...mapActions(['saveContact', 'cancelCreateContact']),
-		saveEditedContact() {
-			this.saveContact(this.localContact);
-			this.localContact = this.defaultContact();
-			this.cancelCreateContact();
+		...mapActions(['handleContact', 'openContactForm']),
+		saveContact() {
+			this.handleContact(this.localContact);
 		},
-		defaultContact() {
-			return { id: null, name: '', phone: '', email: '' };
-		}
+		cancelEdit() {
+			this.openContactForm(null);
+		},
 	}
 };
 </script>
